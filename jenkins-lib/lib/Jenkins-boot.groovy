@@ -18,8 +18,6 @@ pipeline {
         stage('Build') {
             steps {
                 sh "mvn clean package install -Dmaven.test.skip=true -pl ${BUILD_ROOT_PATH}/${SERVICE_NAME}/"
-            }
-            steps{
                 stash includes: "${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/${SERVICE_NAME}-${SERVICE_VERSION}.jar", name:"${SERVICE_NAME}"
             }
         }
