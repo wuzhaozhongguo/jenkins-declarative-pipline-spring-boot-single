@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Stash'){
             steps {
-                stash includes: "${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/${SERVICE_NAME}-${SERVICE_VERSION}.jar", name:"${SERVICE_NAME}-${SERVICE_VERSION}.jar"
+                stash includes: "${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/*.jar", name:"${SERVICE_NAME}"
             }
         }
     }
