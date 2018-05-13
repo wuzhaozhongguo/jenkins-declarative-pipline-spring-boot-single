@@ -25,11 +25,14 @@ pipeline {
                 stash includes: "${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/*.jar", name:"${SERVICE_NAME}"
             }
         }
+        agent {
+            node {
+                label 'test'
+            }
+        }
         stage('UPLOAD'){
             steps {
-                node('test') {
-                        unstash "${SERVICE_NAME}"
-                }
+                unstash "${SERVICE_NAME}"
             }
         }
     }
