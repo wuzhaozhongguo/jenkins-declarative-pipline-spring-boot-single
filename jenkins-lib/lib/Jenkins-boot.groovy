@@ -46,10 +46,6 @@ pipeline {
             label 'test'
         }
     }
-    tools {
-        jdk 'java1.8'
-        maven 'maven3'
-    }
     stage('UPLOAD'){
         steps {
             unstash "${SERVICE_NAME}"
