@@ -28,9 +28,7 @@ pipeline {
         stage('UPLOAD'){
             steps {
                 node('test') {
-                    steps {
                         unstash "${SERVICE_NAME}"
-                    }
                 }
             }
         }
