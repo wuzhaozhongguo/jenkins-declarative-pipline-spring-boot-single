@@ -25,6 +25,13 @@ pipeline {
                 stash includes: "${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/*.jar", name:"${SERVICE_NAME}"
             }
         }
+        node('test') {
+            stage('UPLOAD'){
+                steps {
+                    unstash "${SERVICE_NAME}"
+                }
+            }
+        }
     }
     post {
         success {
