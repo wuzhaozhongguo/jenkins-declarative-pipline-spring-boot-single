@@ -46,9 +46,11 @@ pipeline {
             label 'test'
         }
     }
-    stage('UPLOAD'){
-        steps {
-            unstash "${SERVICE_NAME}"
+    stages {
+        stage('UPLOAD') {
+            steps {
+                unstash "${SERVICE_NAME}"
+            }
         }
     }
 }
