@@ -4,7 +4,7 @@ SCM_URL="git@10.50.10.214:jcpt/caifubao-jcpt.git"
 SCM_BRANCH="test"
 BUILD_ROOT_PATH="caifubao-service/"
 pipeline {
-    agent any
+    agent none
     tools {
         jdk 'java1.8'
         maven 'maven3'
