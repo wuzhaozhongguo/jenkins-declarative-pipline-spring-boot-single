@@ -11,21 +11,37 @@ pipeline {
     }
     stages {
         stage('Checkout') {
+            agent {
+                label 'master'
+            }
             steps {
                 git branch: "${SCM_BRANCH}", credentialsId: 'wuzhao', url: "${SCM_URL}"
             }
         }
         stage('Build') {
+            agent {
+                label 'master'
+            }
             steps {
                 sh "mvn clean package install -Dmaven.test.skip=true -pl ${BUILD_ROOT_PATH}/${SERVICE_NAME}/"
             }
         }
         stage('Stash'){
+            agent {
+                label 'master'
+            }
             steps {
                 stash includes: "${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/*.jar", name:"${SERVICE_NAME}"
             }
         }
-
+        stage('UPLOAD') {
+            agent {
+                label 'test'
+            }
+            steps {
+                unstash "${SERVICE_NAME}"
+            }
+        }
     }
     post {
         success {
@@ -36,21 +52,6 @@ pipeline {
         }
         aborted {
             echo 'aborted!'
-        }
-    }
-}
-
-pipeline {
-    agent {
-        node {
-            label 'test'
-        }
-    }
-    stages {
-        stage('UPLOAD') {
-            steps {
-                unstash "${SERVICE_NAME}"
-            }
         }
     }
 }
