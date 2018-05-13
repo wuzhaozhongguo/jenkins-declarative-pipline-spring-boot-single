@@ -26,11 +26,11 @@ pipeline {
             }
         }
         stage('UPLOAD'){
-            node('test') {
-                steps {
-                    unstash "${SERVICE_NAME}"
-                }
-            }
+//            node('test') {
+//                steps {
+//                    unstash "${SERVICE_NAME}"
+//                }
+//            }
         }
     }
     post {
