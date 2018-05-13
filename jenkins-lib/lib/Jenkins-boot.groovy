@@ -25,16 +25,7 @@ pipeline {
                 stash includes: "${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/*.jar", name:"${SERVICE_NAME}"
             }
         }
-        agent {
-            node {
-                label 'test'
-            }
-        }
-        stage('UPLOAD'){
-            steps {
-                unstash "${SERVICE_NAME}"
-            }
-        }
+
     }
     post {
         success {
@@ -45,6 +36,23 @@ pipeline {
         }
         aborted {
             echo 'aborted!'
+        }
+    }
+}
+
+pipeline {
+    agent {
+        node {
+            label 'test'
+        }
+    }
+    tools {
+        jdk 'java1.8'
+        maven 'maven3'
+    }
+    stage('UPLOAD'){
+        steps {
+            unstash "${SERVICE_NAME}"
         }
     }
 }
