@@ -4,42 +4,34 @@ SCM_URL="git@10.50.10.214:jcpt/caifubao-jcpt.git"
 SCM_BRANCH="test"
 BUILD_ROOT_PATH="caifubao-service/"
 pipeline {
-    agent none
     tools {
         jdk 'java1.8'
         maven 'maven3'
     }
-    stages {
-        stage('Checkout') {
-            agent {
-                label 'master'
+    node{
+        stages {
+            stage('Checkout') {
+                steps {
+                    git branch: "${SCM_BRANCH}", credentialsId: 'wuzhao', url: "${SCM_URL}"
+                }
             }
-            steps {
-                git branch: "${SCM_BRANCH}", credentialsId: 'wuzhao', url: "${SCM_URL}"
+            stage('Build') {
+                steps {
+                    sh "mvn clean package install -Dmaven.test.skip=true -pl ${BUILD_ROOT_PATH}/${SERVICE_NAME}/"
+                }
             }
-        }
-        stage('Build') {
-            agent {
-                label 'master'
+            stage('Stash'){
+                steps {
+                    stash includes: "${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/*.jar", name:"${SERVICE_NAME}"
+                }
             }
-            steps {
-                sh "mvn clean package install -Dmaven.test.skip=true -pl ${BUILD_ROOT_PATH}/${SERVICE_NAME}/"
-            }
-        }
-        stage('Stash'){
-            agent {
-                label 'master'
-            }
-            steps {
-                stash includes: "${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/*.jar", name:"${SERVICE_NAME}"
-            }
-        }
-        stage('UPLOAD') {
-            agent {
-                label 'test'
-            }
-            steps {
-                unstash "${SERVICE_NAME}"
+
+            stage('UPLOAD') {
+                steps {
+                    node('test'){
+                        unstash "${SERVICE_NAME}"
+                    }
+                }
             }
         }
     }
