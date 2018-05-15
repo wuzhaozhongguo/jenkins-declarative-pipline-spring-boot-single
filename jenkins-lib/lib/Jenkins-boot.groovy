@@ -8,7 +8,6 @@ pipeline {
         jdk 'java1.8'
         maven 'maven3'
     }
-    node{
         stages {
             stage('Checkout') {
                 steps {
@@ -34,7 +33,6 @@ pipeline {
                 }
             }
         }
-    }
     post {
         success {
             echo 'success!'
