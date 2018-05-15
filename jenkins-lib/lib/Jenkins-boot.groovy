@@ -13,18 +13,11 @@ pipeline {
             stage('Checkout') {
                 agent{node { label 'master' }}
                 steps {
-//                    git branch: "${SCM_BRANCH}", credentialsId: 'wuzhao', url: "${SCM_URL}"
-                    checkout([$class: 'GitSCM', branches: [[name: "*/${SCM_BRANCH}"]],
-                              doGenerateSubmoduleConfigurations: false, extensions: [],
-                              submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'wuzhao',
-                                                                     url: "${SCM_URL}"]]])
-                    sh "pwd"
+                    git branch: "${SCM_BRANCH}", credentialsId: 'wuzhao', url: "${SCM_URL}"
                     sh "mvn clean package install -Dmaven.test.skip=true -pl ${BUILD_ROOT_PATH}/${SERVICE_NAME}/"
-
-                }
-                steps {
                     stash includes: "${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/*.jar", name:"${SERVICE_NAME}"
                 }
+
             }
 //            stage('Build') {
 //                agent{node { label 'master' }}
