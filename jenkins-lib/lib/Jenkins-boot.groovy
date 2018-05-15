@@ -13,7 +13,11 @@ pipeline {
             stage('Checkout') {
                 agent{node { label 'master' }}
                 steps {
-                    git branch: "${SCM_BRANCH}", credentialsId: 'wuzhao', url: "${SCM_URL}"
+//                    git branch: "${SCM_BRANCH}", credentialsId: 'wuzhao', url: "${SCM_URL}"
+                    checkout([$class: 'GitSCM', branches: [[name: "*/${SCM_BRANCH}"]],
+                              doGenerateSubmoduleConfigurations: false, extensions: [],
+                              submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'wuzhao',
+                                                                     url: "${SCM_URL}"]]])
                 }
             }
             stage('Build') {
