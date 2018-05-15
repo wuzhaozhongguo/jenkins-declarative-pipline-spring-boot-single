@@ -18,13 +18,16 @@ pipeline {
                               doGenerateSubmoduleConfigurations: false, extensions: [],
                               submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'wuzhao',
                                                                      url: "${SCM_URL}"]]])
+                    sh "pwd"
+                    sh "mvn clean package install -Dmaven.test.skip=true -pl ${BUILD_ROOT_PATH}/${SERVICE_NAME}/"
+
                 }
             }
             stage('Build') {
                 agent{node { label 'master' }}
                 steps {
-                    sh "pwd"
-                    sh "mvn clean package install -Dmaven.test.skip=true -pl ${BUILD_ROOT_PATH}/${SERVICE_NAME}/"
+//                    sh "pwd"
+//                    sh "mvn clean package install -Dmaven.test.skip=true -pl ${BUILD_ROOT_PATH}/${SERVICE_NAME}/"
                 }
             }
             stage('Stash'){
