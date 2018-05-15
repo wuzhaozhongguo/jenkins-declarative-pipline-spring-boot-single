@@ -22,20 +22,21 @@ pipeline {
                     sh "mvn clean package install -Dmaven.test.skip=true -pl ${BUILD_ROOT_PATH}/${SERVICE_NAME}/"
 
                 }
-            }
-            stage('Build') {
-                agent{node { label 'master' }}
-                steps {
-                    sh "pwd"
-//                    sh "mvn clean package install -Dmaven.test.skip=true -pl ${BUILD_ROOT_PATH}/${SERVICE_NAME}/"
-                }
-            }
-            stage('Stash'){
-                agent{node { label 'master' }}
                 steps {
                     stash includes: "${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/*.jar", name:"${SERVICE_NAME}"
                 }
             }
+//            stage('Build') {
+//                agent{node { label 'master' }}
+//                steps {
+//                    sh "pwd"
+////                    sh "mvn clean package install -Dmaven.test.skip=true -pl ${BUILD_ROOT_PATH}/${SERVICE_NAME}/"
+//                }
+//            }
+//            stage('Stash'){
+//                agent{node { label 'master' }}
+//
+//            }
 
             stage('UPLOAD') {
                 agent{node { label 'test' }}
