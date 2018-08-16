@@ -10,7 +10,8 @@
 //DEPLOY_NODE="master"//服务发布节点
 //BUILD_MAIL="liuzcmf@fansfinancial.com"//构建邮件通知
 
-def deployBootService(String SERVICE_NAME,String SERVICE_PORT_DEBUG,String SERVICE_MAIN_CLASS,String SERVICE_ENV,String SERVICE_CONFIG_SERVICE_URL,
+def call(String SERVICE_NAME,String SERVICE_PORT_DEBUG,String SERVICE_MAIN_CLASS,String SERVICE_ENV,String
+        SERVICE_CONFIG_SERVICE_URL,
                       String SCM_URL,String SCM_BRANCH,String BUILD_ROOT_PATH,String DEPLOY_PATH_ROOT,String DEPLOY_NODE,String BUILD_MAIL){
 //固定配置
     JENKINS_TOOLS_PATH="/usr/local/jenkins/workspace/.jenkins/tools/"//JENKINS工具目录
