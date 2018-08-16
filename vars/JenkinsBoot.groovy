@@ -1,4 +1,3 @@
-package cfb.ops.jenkins.sharedlibraries
 //SERVICE_NAME="wi-colour-invest"//服务名称
 //SERVICE_PORT_DEBUG="0"//DEBUG端口 不需要设置为0
 //SERVICE_MAIN_CLASS="com.caifubao.jcpt.wi.colour.invest.app.WiColourInvestApplication"//服务启动入口
@@ -11,9 +10,8 @@ package cfb.ops.jenkins.sharedlibraries
 //DEPLOY_NODE="master"//服务发布节点
 //BUILD_MAIL="liuzcmf@fansfinancial.com"//构建邮件通知
 
-def deployBootService(SERVICE_NAME,SERVICE_PORT_DEBUG,SERVICE_MAIN_CLASS,SERVICE_ENV,SERVICE_CONFIG_SERVICE_URL,
+def call(SERVICE_NAME,SERVICE_PORT_DEBUG,SERVICE_MAIN_CLASS,SERVICE_ENV,SERVICE_CONFIG_SERVICE_URL,
                       SCM_URL,SCM_BRANCH,BUILD_ROOT_PATH,DEPLOY_PATH_ROOT,DEPLOY_NODE,BUILD_MAIL){
-
 //固定配置
     JENKINS_TOOLS_PATH="/usr/local/jenkins/workspace/.jenkins/tools/"//JENKINS工具目录
     JENKINS_DEPLOY_SHELL_NAME="service.sh"//jenkins部署脚本
