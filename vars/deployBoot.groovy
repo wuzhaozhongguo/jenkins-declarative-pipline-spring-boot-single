@@ -17,8 +17,9 @@ def call(String SERVICE_NAME,String SERVICE_PORT_DEBUG,String SERVICE_MAIN_CLASS
                 steps {
                     sh "java -version"
                     git branch: "${SCM_BRANCH}", credentialsId: 'USERNAME-WUZHAO', url: "${SCM_URL}"
-                    sh "mvn clean package install -Dmaven.test.skip=true -pl ${BUILD_ROOT_PATH}${SERVICE_NAME}/"
-                    stash includes: "${BUILD_ROOT_PATH}${SERVICE_NAME}/target/${SERVICE_NAME}*.jar",name:"${SERVICE_NAME}"
+                    sh "mvn clean package install -Dmaven.test.skip=true -pl ${BUILD_ROOT_PATH}/${SERVICE_NAME}/"
+                    stash includes: "${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/${SERVICE_NAME}*.jar",
+                            name:"${SERVICE_NAME}"
 
                     dir("${JENKINS_TOOLS_PATH}"){
                         stash includes: '*', name: 'jenkins_tools'
@@ -38,10 +39,11 @@ def call(String SERVICE_NAME,String SERVICE_PORT_DEBUG,String SERVICE_MAIN_CLASS
                         }
                         //获取jar包文件名
                         def SERVICE_FILE_NAME = sh(returnStdout: true, script: "ls " +
-                                "${BUILD_ROOT_PATH}${SERVICE_NAME}/target/ | grep -E '^${SERVICE_NAME}.*.jar\$'").trim()
+                                "${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/ | grep -E '^${SERVICE_NAME}.*.jar\$'")
+                                .trim()
                         //生成服务、服务备份文件夹
                         sh "mkdir -p ${DEPLOY_PATH_ROOT}/${SERVICE_NAME}/backup/"
-                        sh "cp ${BUILD_ROOT_PATH}${SERVICE_NAME}/target/${SERVICE_FILE_NAME} " +
+                        sh "cp ${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/${SERVICE_FILE_NAME} " +
                                 "${DEPLOY_PATH_ROOT}/${SERVICE_NAME}/backup/app.jar.update"
                         //切换到服务目录
                         dir("${DEPLOY_PATH_ROOT}/${SERVICE_NAME}"){
