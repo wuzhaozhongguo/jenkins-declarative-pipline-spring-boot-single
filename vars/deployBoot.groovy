@@ -18,7 +18,7 @@ def call(String SERVICE_NAME,String SERVICE_PORT_DEBUG,String SERVICE_MAIN_CLASS
                     sh "java -version"
                     git branch: "${SCM_BRANCH}", credentialsId: 'USERNAME-WUZHAO', url: "${SCM_URL}"
                     sh "mvn clean package install -Dmaven.test.skip=true -pl ${BUILD_ROOT_PATH}/${SERVICE_NAME}/"
-                    stash includes: "${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/${SERVICE_NAME}*.jar",
+                    stash includes: "${BUILD_ROOT_PATH}${SERVICE_NAME}/target/${SERVICE_NAME}*.jar",
                             name:"${SERVICE_NAME}"
 
                     dir("${JENKINS_TOOLS_PATH}"){
