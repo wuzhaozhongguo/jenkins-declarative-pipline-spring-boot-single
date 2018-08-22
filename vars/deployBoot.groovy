@@ -75,7 +75,7 @@ def call(String SERVICE_NAME,Integer SERVICE_PORT_DEBUG,String SERVICE_MAIN_CLAS
                                         "${_SERVICE_TRACE_AGENT_PATH}"
                                 sh "tar zxvf ${_SERVICE_TRACE_AGENT_PATH}/${JENKINS_DEPLOY_TRACE_NAME} -C" +
                                         "${_SERVICE_TRACE_AGENT_PATH}"
-                                sh "sed -i 's/\\(agent\\.application_code=\\).*\\\$/\\1${SERVICE_NAME}/' " +
+                                sh "sed -i \"s/\\(agent\\.application_code=\\).*\\\$/\\1${SERVICE_NAME}/\" " +
                                         "${_SERVICE_TRACE_AGENT_PATH}/config/agent.config"
                             }
                         }
