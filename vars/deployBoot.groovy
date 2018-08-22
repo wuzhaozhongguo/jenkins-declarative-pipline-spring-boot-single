@@ -85,8 +85,7 @@ def call(String SERVICE_NAME,Integer SERVICE_PORT_DEBUG,String SERVICE_MAIN_CLAS
                         }
                         //切换到服务目录
                         dir("${DEPLOY_PATH_ROOT}/${SERVICE_NAME}"){
-                            sh "sh ${JENKINS_DEPLOY_SHELL_NAME} update ${SERVICE_NAME} ${SERVICE_MAIN_CLASS} ${SERVICE_ENV} " +
-                                    "${SERVICE_PORT_DEBUG} ${SERVICE_CONFIG_SERVICE_URL} '${_SERVICE_TRACE_AGENT_PATH}'"
+                            sh "sh ${JENKINS_DEPLOY_SHELL_NAME} update ${SERVICE_NAME} ${SERVICE_MAIN_CLASS} ${SERVICE_ENV} ${SERVICE_PORT_DEBUG} ${SERVICE_CONFIG_SERVICE_URL} ${_SERVICE_TRACE_AGENT_PATH}"
                         }
                     }
                 }
