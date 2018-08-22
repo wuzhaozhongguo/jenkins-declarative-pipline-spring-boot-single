@@ -19,6 +19,7 @@ def call(String SERVICE_NAME,Integer SERVICE_PORT_DEBUG,String SERVICE_MAIN_CLAS
     _JENKINS_STASH_TOOLS_SHELL_NAME='jenkins_shell_tools'
     _JENKINS_STASH_TOOLS_TOOLS_NAME='jenkins_tools_tools'
     _SERVICE_TRACE_AGENT_PATH=""//trace agent目录
+    _SERVICE_TRACE_THIS_ENV=SERVICE_TRACE_ENV[SERVICE_ENV]
     pipeline {
         agent none
         tools {
@@ -75,8 +76,10 @@ def call(String SERVICE_NAME,Integer SERVICE_PORT_DEBUG,String SERVICE_MAIN_CLAS
                                         "${_SERVICE_TRACE_AGENT_PATH}"
                                 sh "tar zxvf ${_SERVICE_TRACE_AGENT_PATH}/${JENKINS_DEPLOY_TRACE_NAME} -C" +
                                         "${_SERVICE_TRACE_AGENT_PATH}"
-                                def _SERVICE_AGENT_NAME="trace-agent-${SERVICE_NAME}"
+                                _SERVICE_AGENT_NAME="trace-agent-${SERVICE_NAME}"
                                 sh "sed -i \"s/\\(agent\\.application_code=\\).*\\\$/\\1${_SERVICE_AGENT_NAME}/\" " +
+                                        "${_SERVICE_TRACE_AGENT_PATH}/config/agent.config"
+                                sh "sed -i \"s/\\(collector\\.servers=\\).*\\\$/\\1${_SERVICE_TRACE_THIS_ENV['collector_servers']}/\" " +
                                         "${_SERVICE_TRACE_AGENT_PATH}/config/agent.config"
                             }
                         }
