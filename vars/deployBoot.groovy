@@ -20,6 +20,7 @@ def call(String SERVICE_NAME,Integer SERVICE_PORT_DEBUG,String SERVICE_MAIN_CLAS
     _JENKINS_STASH_TOOLS_TOOLS_NAME='jenkins_tools_tools'
     _SERVICE_TRACE_AGENT_PATH=""//trace agent目录
     _SERVICE_TRACE_THIS_ENV=SERVICE_TRACE_ENV[SERVICE_ENV]
+    _SERVICE_BUILD_PATH="${BUILD_ROOT_PATH}${SERVICE_NAME}"//服务构建目录(相对目录)
     pipeline {
         agent none
         tools {
@@ -32,8 +33,8 @@ def call(String SERVICE_NAME,Integer SERVICE_PORT_DEBUG,String SERVICE_MAIN_CLAS
                 steps {
                     sh "java -version"
                     git branch: "${SCM_BRANCH}", credentialsId: 'USERNAME-WUZHAO', url: "${SCM_URL}"
-                    sh "mvn clean package install -Dmaven.test.skip=true -pl ${BUILD_ROOT_PATH}/${SERVICE_NAME}/"
-                    stash includes: "${BUILD_ROOT_PATH}${SERVICE_NAME}/target/${SERVICE_NAME}*.jar",
+                    sh "mvn clean package install -Dmaven.test.skip=true -pl ${_SERVICE_BUILD_PATH}/"
+                    stash includes: "${_SERVICE_BUILD_PATH}/target/${SERVICE_NAME}*.jar",
                             name:"${_SERVICE_STASH_DEPLOY_FILE_NAME}"
 
                     dir("${JENKINS_TOOLS_PATH}"){
@@ -60,11 +61,11 @@ def call(String SERVICE_NAME,Integer SERVICE_PORT_DEBUG,String SERVICE_MAIN_CLAS
                         }
                         //获取jar包文件名
                         def SERVICE_FILE_NAME = sh(returnStdout: true, script: "ls " +
-                                "${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/ | grep -E '^${SERVICE_NAME}.*.jar\$'")
+                                "${_SERVICE_BUILD_PATH}/target/ | grep -E '^${SERVICE_NAME}.*.jar\$'")
                                 .trim()
                         //生成服务、服务备份文件夹
                         sh "mkdir -p ${DEPLOY_PATH_ROOT}/${SERVICE_NAME}/backup/"
-                        sh "cp ${BUILD_ROOT_PATH}/${SERVICE_NAME}/target/${SERVICE_FILE_NAME} " +
+                        sh "cp ${_SERVICE_BUILD_PATH}/target/${SERVICE_FILE_NAME} " +
                                 "${DEPLOY_PATH_ROOT}/${SERVICE_NAME}/backup/app.jar.update"
                         //调用链跟踪
                         if (SERVICE_TRACE == 1){
